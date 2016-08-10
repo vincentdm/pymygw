@@ -1,6 +1,6 @@
 [Unit]
 Description=PyMyGW service
-After=rsyslog.target remote-fs.target
+After=rsyslog.target remote-fs.target multi-user.target
 
 [Service]
 Type=simple

@@ -91,6 +91,7 @@ class NodeProcessor:
 class SensorProcessor:
     def __init__(self, sensor):
         self._sensor = sensor
+        self._log = getLogger('pymygw')
 
     def process(self, msg):
         '''

@@ -27,7 +27,7 @@ EOL = '\n'
     TLS Attention
     !!!The broker dns name and the CN in the tls cert must be the same!!!
 '''
-MQTTBroker = '192.168.0.4'
+MQTTBroker = '192.168.0.3'
 #MQTTTLS = True
 MQTTTLS = False
 MQTTPort = 1883
@@ -123,6 +123,16 @@ MySensorPresentation = {
     'S_CUSTOM': {'id': 23, 'comment': 'Use this for custom sensors where no other fits.'},
     'S_DUST': {'id': 24, 'comment': 'Dust level sensor'},
     'S_SCENE_CONTROLLER': {'id': 25, 'comment': 'Scene controller device'},
+    'S_RGB_LIGHT': {'id': 26, 'comment': 'RGB light'},
+    'S_RGBW_LIGHT': {'id': 27, 'comment': 'RGBW light'},
+    'S_COLOR_SENSOR': {'id': 28, 'comment': 'Color sensor'},
+    'S_HVAC': {'id': 29, 'comment': 'Thermostat/HVAC device'},
+    'S_MULTIMETER': {'id': 30, 'comment': 'Multimeter device'},
+    'S_SPRINKLER': {'id': 31, 'comment': 'Sprinkler device'},
+    'S_WATER_LEAK': {'id': 32, 'comment': 'Water leak sensor'},
+    'S_SOUND': {'id': 33, 'comment': 'Sound sensor'},
+    'S_VIBRATION': {'id': "33, 'comment': 'Vibration sensor device'},
+    'S_MOISTURE': {'id': 35, 'comment': 'Moisture sensor'},
 }
 
 MySensorSetReq = {
@@ -166,6 +176,14 @@ MySensorSetReq = {
     'V_DUST_LEVEL': {'id': 37, 'comment': 'Dust level'},
     'V_VOLTAGE': {'id': 38, 'comment': 'Voltage level'},
     'V_CURRENT': {'id': 39, 'comment': 'Current level'},
+    'V_RGB': {'id': 40, 'comment': 'RGB value transmitted'},
+    'V_RGBW': {'id': 41, 'comment': 'RGBW value transmitted'},
+    'V_ID': {'id': 42, 'comment': 'Optional unique sensor id '},
+    'V_UNIT_PREFIX': {'id': 43, 'comment': 'the unit prefix to be displayed in GUI'},
+    'V_HVAC_SETPOINT_COOL': {'id': 44, 'comment': 'HVAC cold setpoint'},
+    'V_HVAC_SETPOINT_HEAT': {'id': 45, 'comment': 'HVAC/Heater setpoint'},
+    'V_HVAC_FLOW_MODE': {'id': 46, 'comment': 'Flow mode for HVAC'},
+    
 }
 
 MySensorInternal = {
