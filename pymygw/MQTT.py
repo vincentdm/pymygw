@@ -97,21 +97,23 @@ class MQTT(object):
         if self._data and self.connected:
             self._log.debug('Try to publish values to the MQTT Broker on {0}: {1}'.format(config.MQTTBroker,
                                                                                            msg))
-            topic = "/" + config.MQTTTopic
-            try:
-                topic = topic.replace(
-                    '%nodeid', self._data['nodeid']).replace(
-                    '%childid', self._data['childid']).replace(
-                    '%sensorid', self._data['childid'])
+            
+            for mqttTopic in config.MQTTTopics:
+                topic = "/" + mqttTopic
+                try:
+                    topic = topic.replace(
+                        '%nodeid', self._data['nodeid']).replace(
+                        '%childid', self._data['childid']).replace(
+                        '%sensorid', self._data['childid'])
+                   
+                    if not (info is None):
+                        topic=topic.replace(
+                            '%childdescription', info.description).replace(
+                            '%sensordescription', info.description)
                
-                if not (info is None):
-                    topic=topic.replace(
-                        '%childdescription', info.description).replace(
-                        '%sensordescription', info.description)
-           
-                self.__publish(topic, self._data['payload'])
-            except Exception, e:
-             self._log.error('MQTT Publish failed: Failed to create topic');
+                    self.__publish(topic, self._data['payload'])
+                except Exception, e:
+                 self._log.error('MQTT Publish failed: Failed to create topic');
         
     def disconnect(self):
         self._PublishClient.disconnect()

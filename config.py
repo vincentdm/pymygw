@@ -27,7 +27,7 @@ EOL = '\n'
     TLS Attention
     !!!The broker dns name and the CN in the tls cert must be the same!!!
 '''
-MQTTBroker = '192.168.0.3'
+MQTTBroker = '192.168.0.4'
 #MQTTTLS = True
 MQTTTLS = False
 MQTTPort = 1883
@@ -50,6 +50,7 @@ MQTTProtocol = 3
 '''
 #MQTTTopic = 'pymygw/%nodeid/%childid'
 MQTTTopic = 'pymygw/%childdescription'
+MQTTTopics = [ 'pymygw/%childdescription', 'pymygw/%nodeid/%childid' ]
 MQTTCert = 'pymygw.crt'
 MQTTKey = 'pymygw.key'
 MQTTCa = 'ca.crt'
