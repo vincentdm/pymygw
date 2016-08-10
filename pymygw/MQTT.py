@@ -47,7 +47,7 @@ class MQTT(object):
         self._PublishClient.on_disconnect = self.__on_disconnect
         self._PublishClient.on_publish = self.__on_publish
         self._PublishClient.on_log = self.__on_log
-
+        self._PublishClient.on_message = self.__on_message
         self._PublishClient.connect(config.MQTTBroker, port=p)
         self._PublishClient.loop_start()
         # sleep to fix timing problem on rpi2
@@ -66,7 +66,12 @@ class MQTT(object):
         if rc != 0:
             self._log.error('MQTT connection failed: {0}'.format(self._rc[rc]))
             self.connected = False
+            return
         self.connected = True
+        #client.subscribe("$SYS/#")
+        client.subscribe(config.MQTTSubscribeTopic)
+        
+    
 
     def __on_disconnect(self, client, userdata, rc):
         if rc != 0:
@@ -74,6 +79,9 @@ class MQTT(object):
         else:
             self._log.info('MQTT Client disconnected from Broker {0}'.format(config.MQTTBroker))
         self.connected = False
+        
+    def __on_message(self, client, userdata, msg):
+        self._log.info('MQTT Client received a message from Broker: topic: {}, payload: {}'.format(msg.topic, str(msg.payload)))
 
     def __on_publish(self, client, userdata, mid):
         pass

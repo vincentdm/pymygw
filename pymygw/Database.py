@@ -186,68 +186,7 @@ class Database2():
         except Exception,e:
             self._log.debug('unknown error when quering for node {}: {}'.format(n, e))
 
-    def __update(self):
-        '''
-            updates the db entry if needed
-        '''
-        self._result.last_seen = time.time()
-        if 'sensortype' in self._args:
-            '''
-                strip of first two characters
-                could be S_ V_
-                depends on presentation or set/req
-            '''
-            self._args['sensortype'] = self._args['sensortype'].split('_')[1]
-            if not self._result.sensor_type:
-                self._result.sensor_type = self._args['sensortype']
-            if self._args['sensortype'] != self._result.sensor_type:
-                self._log.error('SensorType mismatch: DB {0} \n\
-                                 Reported Type: {1}'.format(self._result.sensor_type,
-                                                            self._args['sensortype']))
-                return False
 
-        if 'openhab' in self._args and \
-                self._args['openhab'] != self._result.openhab:
-            self._log.debug('OpenhabDB entry mismatch: DB {0} \n\
-                             New Openhab: {1}'.format(self._result.openhab,
-                                                      self._args['openhab']))
-            self._result.openhab = self._args['openhab']
-
-        if 'comment' in self._args and \
-                self._args['comment'] != self._result.comment:
-            self._result.comment = self._args['comment']
-
-        if 'battery' in self._args and \
-                self._args['battery'] != self._result.battery:
-            self._result.battery = self._args['battery']
-
-        if 'battery_level' in self._args and \
-                self._args['battery_level'] != self._result.battery_level:
-            self._result.battery_level = self._args['battery_level']
-
-        if 'api_version' in self._args and \
-                self._args['api_version'] != self._result.api_version:
-            self._result.api_version = self._args['api_version']
-
-        if 'sketch_version' in self._args and \
-                self._args['sketch_version'] != self._result.sketch_version:
-            self._result.sketch_version = self._args['sketch_version']
-
-        if 'sketch_name' in self._args and \
-                self._args['sketch_name'] != self._result.sketch_name:
-            self._result.sketch_name = self._args['sketch_name']
-
-        if 'payload' in self._args and \
-                self._args['payload'] != self._result.last_value:
-            self._result.last_value = self._args['payload']
-
-        if self.__commit():
-            self._log.debug('Update for {0} '
-                            'finished successfully'.format(self._result))
-            return True
-        else:
-            self._log.error('Updated failed for {0}'.format(self._result))
-            return False
 
     def process(self, msg):
         nodeid = msg['nodeid']

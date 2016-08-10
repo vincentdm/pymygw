@@ -27,7 +27,7 @@ EOL = '\n'
     TLS Attention
     !!!The broker dns name and the CN in the tls cert must be the same!!!
 '''
-MQTTBroker = '192.168.0.3'
+MQTTBroker = '192.168.0.4'
 #MQTTTLS = True
 MQTTTLS = False
 MQTTPort = 1883
@@ -51,6 +51,19 @@ MQTTProtocol = 3
 #MQTTTopic = 'pymygw/%nodeid/%childid'
 MQTTTopic = 'pymygw/%childdescription'
 MQTTTopics = [ 'pymygw/%childdescription', 'pymygw/%nodeid/%childid' ]
+
+
+'''
+MQTTSubscribeTopic:
+    The topic on which the gateway will subscribe.
+    Do not forget to add the 3 wildcards:
+    1. node ID:  Node to which the set will be sent
+    2. child ID:  The sensor on the the node for whom the set is meant.
+    3. Set Type: Either a decimal number or the MySensors V_* name of the 
+       Variable to be set on the given sensor
+'''
+MQTTSubscribeTopic = 'pymygw/+/+/+'
+
 MQTTCert = 'pymygw.crt'
 MQTTKey = 'pymygw.key'
 MQTTCa = 'ca.crt'
@@ -76,7 +89,7 @@ OpenhabCacheTimeout = 300
 Database = 'sqlite:///pymygw.db'
 
 '''
-    MySensor Serial Protocol Definition v1.4
+    MySensor Serial Protocol Definition v1.5
     http://www.mysensors.org/build/serial_api
 
 '''
@@ -131,7 +144,7 @@ MySensorPresentation = {
     'S_SPRINKLER': {'id': 31, 'comment': 'Sprinkler device'},
     'S_WATER_LEAK': {'id': 32, 'comment': 'Water leak sensor'},
     'S_SOUND': {'id': 33, 'comment': 'Sound sensor'},
-    'S_VIBRATION': {'id': "33, 'comment': 'Vibration sensor device'},
+    'S_VIBRATION': {'id': 33, 'comment': 'Vibration sensor device'},
     'S_MOISTURE': {'id': 35, 'comment': 'Moisture sensor'},
 }
 
