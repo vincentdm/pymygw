@@ -62,7 +62,7 @@ MQTTSubscribeTopic:
     3. Set Type: Either a decimal number or the MySensors V_* name of the 
        Variable to be set on the given sensor
 '''
-MQTTSubscribeTopic = 'pymygw/+/+/+'
+MQTTSubscribeTopic = 'pymygw-in/#' 
 
 MQTTCert = 'pymygw.crt'
 MQTTKey = 'pymygw.key'

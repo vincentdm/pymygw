@@ -5,6 +5,8 @@ from time import sleep
 import config
 import tools
 
+import MySensor
+
 
 class MQTT(object):
     def __init__(self):
@@ -17,6 +19,8 @@ class MQTT(object):
                     4: 'Connection refused - bad username or password',
                     5: 'Connection refused - not authorised'}
         self.__client()
+        
+        self.on_message_received = None
 
     def __client(self):
         self._PublishClient = mqtt.Client(client_id='pymygw-serialgw', protocol=config.MQTTProtocol)
@@ -82,6 +86,30 @@ class MQTT(object):
         
     def __on_message(self, client, userdata, msg):
         self._log.info('MQTT Client received a message from Broker: topic: {}, payload: {}'.format(msg.topic, str(msg.payload)))
+        
+        cmd_type, node_id, child_id, var_id = msg.topic[len(config.MQTTSubscribeTopic):].split('/')
+        
+        setReq = MySensor.MySensorSetReq(None)
+        varname = None
+        if var_id.isdigit():
+            varname = MySensor.MySensorSetReq(None).name(var_id)
+        else:
+            varname = var_id
+            var_id = MySensor.MySensorSetReq(None).id(varname)
+        
+        message = {}
+        message['nodeid'] = node_id
+        message['childid'] = child_id
+        message['messagetype'] = MySensor.MySensorMessageType().name(cmd_type)
+        message['subtype'] = varname
+        message['ack'] = 1
+        message['payload'] = msg.payload
+
+        
+        
+        
+        if self.on_message_received is not None:
+            self.on_message_received(message)
 
     def __on_publish(self, client, userdata, mid):
         pass

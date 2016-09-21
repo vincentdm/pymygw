@@ -90,7 +90,6 @@ class NodeProcessor:
 
 class SensorProcessor:
     def __init__(self, sensor):
-        self._log = getLogger('pymygw')
         self._sensor = sensor
         self._log = getLogger('pymygw')
 

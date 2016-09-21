@@ -19,6 +19,7 @@ class Gateway(Thread):
         self._MySensorMessagetype = MySensor.MySensorMessageType()
         self._MySensorPresentation = MySensor.MySensorPresentation()
         self._MySensorSetReq = MySensor.MySensorSetReq(publisher)
+        self._MySensorSetReqMQTT = MySensor.MySensorSetReq(self)
 
         self._serialPort = config.SerialPort
         self._serialBaud = config.SerialBaud
@@ -34,6 +35,8 @@ class Gateway(Thread):
                      'subtype': self._MySensorInternal.id('I_VERSION'),
                      'payload': 'Get Version'}
         self.__sendSerial()
+        
+        publisher.on_message_received = self.__on_incoming_message
 
     def run(self):
         '''
@@ -51,9 +54,25 @@ class Gateway(Thread):
                 self.__parseIncoming()
 
     def stop(self):
-        self._log.info('stop recieved, shutting down')
+        self._log.info('stop received, shutting down')
         self.__disconnectSerial()
         return
+        
+    def __on_incoming_message(self, msg):
+        print "Got message {}".format(msg)
+        serialMessageFmt = "{nodeid};{childid};{messagetype};{ack};{subtype};{payload}\n"
+        
+        if not(msg['messagetype'].isdigit()):
+            msg['messagetype'] = self._MySensorMessagetype.id(msg['messagetype'])
+            
+        if not(msg['subtype'].isdigit()):
+            msg['subtype'] = self._MySensorSetReq.id(msg['subtype'])
+        
+        serialMessage=serialMessageFmt.format(**msg);
+        print "Will send: {}".format(serialMessage)
+        if self._serialIsConnected and self._serialIsWriteable:
+            self._serialConnection.write(serialMessage)
+            self._log.info('command send: {0}'.format(serialMessage))
 
     def __parseIncoming(self):
         '''
